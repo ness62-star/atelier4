@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import joblib
@@ -6,10 +7,14 @@ import numpy as np
 # Initialize FastAPI app
 app = FastAPI()
 
+# Dynamically get the absolute path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "decision_tree_model.pkl")
+
 # Load the trained model
-MODEL_PATH = "decision_tree_model.pkl"  # Updated to use your model's path
 try:
     model = joblib.load(MODEL_PATH)
+    print(f"Model loaded from {MODEL_PATH}")
 except FileNotFoundError:
     raise HTTPException(status_code=500, detail="Model file not found. Ensure the model is in the correct path.")
 
