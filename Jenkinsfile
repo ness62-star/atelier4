@@ -43,7 +43,6 @@ pipeline {
                 script {
                     echo "Listing files in workspace..."
                     bat 'dir'  // For Windows
-                    sh 'ls -l'  // For Linux
                 }
             }
         }
