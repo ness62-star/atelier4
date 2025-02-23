@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MLOps Web Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin: 5px 0; }
+        input[type="text"], input[type="number"] { width: 300px; padding: 5px; }
+        button { padding: 5px 10px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        p { color: #555; }
+    </style>
+</head>
+<body>
+    <h1>MLOps Web Interface</h1>
+
+    <!-- Prediction Form -->
+    <h2>Predict</h2>
+    <form method="POST">
+        <label>Data (comma-separated numbers, e.g., 1.0, 2.0):</label>
+        <input type="text" name="data" placeholder="1.0, 2.0" required><br>
+        <input type="hidden" name="action" value="predict">
+        <button type="submit">Predict</button>
+    </form>
+    {% if prediction %}
+        <p>Prediction: {{ prediction }}</p>
+    {% endif %}
+
+    <!-- Test Dataset 2 -->
+    <h2>Test on Test Dataset (test.csv)</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="test">
+        <button type="submit">Run Test</button>
+    </form>
+    {% if test_predictions %}
+        <p>Test Predictions: {{ test_predictions }}</p>
+    {% endif %}
+
+    <!-- Retrain Form -->
+    <h2>Retrain Decision Tree Model</h2>
+    <form method="POST">
+        <label>Use Default Dataset (train.csv):</label>
+        <input type="checkbox" name="use_default"><br>
+        <label>OR Custom Data (semicolon-separated rows, comma-separated values, e.g., 1.0,2.0;3.0,4.0):</label>
+        <input type="text" name="retrain_data" placeholder="1.0,2.0;3.0,4.0"><br>
+        <label>Labels (comma-separated, e.g., 0,1):</label>
+        <input type="text" name="labels" placeholder="0,1"><br>
+        <label>Max Depth:</label>
+        <input type="number" name="max_depth" value="5" min="1"><br>
+        <label>Min Samples Split:</label>
+        <input type="number" name="min_samples_split" value="2" min="2"><br>
+        <input type="hidden" name="action" value="retrain">
+        <button type="submit">Retrain</button>
+    </form>
+    {% if retrain_message %}
+        <p>{{ retrain_message }}</p>
+    {% endif %}
+</body>
+</html>
