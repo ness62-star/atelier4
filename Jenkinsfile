@@ -38,6 +38,16 @@ pipeline {
             }
         }
 
+        stage('List Files') {
+            steps {
+                script {
+                    echo "Listing files in workspace..."
+                    bat 'dir'  // For Windows
+                    sh 'ls -l'  // For Linux
+                }
+            }
+        }
+
         stage('Run FastAPI') {
             steps {
                 script {
