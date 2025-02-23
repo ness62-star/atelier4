@@ -7,8 +7,11 @@ import numpy as np
 app = FastAPI()
 
 # Load the trained model
-MODEL_PATH = "models/model.joblib"
-model = joblib.load(MODEL_PATH)
+MODEL_PATH = "decision_tree_model.pkl"  # Updated to use your model's path
+try:
+    model = joblib.load(MODEL_PATH)
+except FileNotFoundError:
+    raise HTTPException(status_code=500, detail="Model file not found. Ensure the model is in the correct path.")
 
 # Request body model for prediction
 class PredictRequest(BaseModel):
