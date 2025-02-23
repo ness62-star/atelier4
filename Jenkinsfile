@@ -12,14 +12,15 @@ pipeline {
             steps {
                 echo 'Starting FastAPI server in the background...'
                 bat 'start /B venv\\Scripts\\uvicorn app:app --host 0.0.0.0 --port 8000 > fastapi.log 2>&1'
-                bat 'timeout /T 10'
+                // Use ping to wait 10 seconds (pinging localhost 10 times, ~1 sec each)
+                bat 'ping 127.0.0.1 -n 11 > nul'  // -n 11 gives ~10 seconds delay
             }
         }
         stage('Train Model with train.csv') {
             steps {
                 echo 'Retraining model with train.csv...'
                 bat 'venv\\Scripts\\activate && curl -X POST "http://localhost:8000/retrain" || echo Retraining failed, proceeding with existing model'
-                bat 'timeout /T 5'
+                bat 'ping 127.0.0.1 -n 6 > nul'  // Wait ~5 seconds
             }
         }
         stage('Test Single Prediction') {
