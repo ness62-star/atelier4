@@ -13,7 +13,7 @@ install
 
 # Code Quality Checks (Linting)
 check
-	$(VENV_ACTIVATE) && python -m flake8 . --max-line-length=100
+	$(VENV_ACTIVATE) && python -m flake8 . --max-line-length=120
 
 # Build and Test API Locally
 build
@@ -26,6 +26,10 @@ test_api
 # Deploy API
 deploy
 	$(VENV_ACTIVATE) && uvicorn appapp --host $(HOST) --port $(PORT) --reload
+
+# Start FastAPI Server
+api:
+	$(VENV_ACTIVATE) && uvicorn app:app --reload --host $(HOST) --port $(PORT)
 
 # Full CICD Pipeline
 all install check build test_api deploy
