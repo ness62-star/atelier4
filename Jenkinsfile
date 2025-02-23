@@ -11,9 +11,7 @@ pipeline {
         stage('Start FastAPI Server') {
             steps {
                 echo 'Starting FastAPI server in the background...'
-                // Start Uvicorn in the background using start command
                 bat 'start /B venv\\Scripts\\uvicorn app:app --host 0.0.0.0 --port 8000 > fastapi.log 2>&1'
-                // Wait for the server to start
                 bat 'timeout /T 10'
             }
         }
@@ -21,7 +19,7 @@ pipeline {
             steps {
                 echo 'Retraining model with train.csv...'
                 bat 'venv\\Scripts\\activate && curl -X POST "http://localhost:8000/retrain" || echo Retraining failed, proceeding with existing model'
-                bat 'timeout /T 5'  // Wait for model to save
+                bat 'timeout /T 5'
             }
         }
         stage('Test Single Prediction') {
@@ -40,4 +38,14 @@ pipeline {
     post {
         always {
             echo 'Cleaning up...'
-            // Stop the Uvicorn process (Windows equivalent
+            bat 'taskkill /F /IM uvicorn.exe /T || echo No Uvicorn process found'
+            archiveArtifacts artifacts: 'fastapi.log', allowEmptyArchive: true
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check the logs in fastapi.log.'
+        }
+    }
+}
