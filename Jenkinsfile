@@ -47,16 +47,6 @@ pipeline {
             }
         }
 
-        stage('Copy Model') {
-            steps {
-                script {
-                    echo "Copying model to workspace..."
-                    bat 'copy decision_tree_model.pkl .'
-                    sh 'cp decision_tree_model.pkl .'
-                }
-            }
-        }
-
         stage('Run FastAPI') {
             steps {
                 script {
