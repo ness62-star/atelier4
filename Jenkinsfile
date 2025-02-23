@@ -32,7 +32,7 @@ pipeline {
                     bat '''
                         call venv\\Scripts\\activate
                         pip install --upgrade pip
-                        pip install -r requirements.txt
+                        pip install --default-timeout=1000  --index-url https://pypi.org/simple --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
                     '''
                 }
             }
