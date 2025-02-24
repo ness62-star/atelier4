@@ -76,29 +76,4 @@ async def retrain(input: RetrainInput = None):
         raise HTTPException(status_code=400, detail="Data and labels must match in length")
 
     try:
-        from sklearn.tree import DecisionTreeClassifier  # Use Decision Tree
-        
-        # Use provided input or default to Dataset 1
-        if input:
-            X_train, y_train = input.data, input.labels
-            hyperparams = input.hyperparams or {}
-        else:
-            X_train, y_train = load_dataset(TRAIN_DATA_PATH, has_labels=True)
-            hyperparams = {}
-
-        # Train the Decision Tree model
-        model_instance = DecisionTreeClassifier(**hyperparams)  # e.g., max_depth, min_samples_split
-        model_instance.fit(X_train, y_train)
-
-        # Save and update the model
-        joblib.dump(model_instance, MODEL_PATH)
-        global model
-        model = model_instance
-
-        return {"message": "Decision Tree model retrained successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Retraining error: {str(e)}")
-
-@app.get("/")
-async def root():
-    return {"message": "MLOps FastAPI service with Decision Tree model"}
+        from
